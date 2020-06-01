@@ -9,7 +9,7 @@ static bool is_running = true;
 const int32 WINDOW_WIDTH = 800;
 const int32 WINDOW_HEIGHT = 600;
 
-static RenderState rs;
+//static RenderState rs;
 
 LRESULT CALLBACK
 window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -48,9 +48,11 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:
 		result = DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
+
+	return result;
 }
 
-int WinMain
+int32 WinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	WNDCLASS window_class = {};
@@ -77,6 +79,8 @@ int WinMain
 		QueryPerformanceFrequency(&perf);
 		performance_frequency = (float)perf.QuadPart;
 	}
+
+	Game game;
 
 	while (is_running)
 	{
@@ -121,7 +125,7 @@ input.buttons[b].is_down = is_down;\
 		}  // PeekMessage ...
 
 		// Simulate
-		Game::getInstance().simulate(&input, delta_time);
+		game.simulate(&input, delta_time);
 
 		// Render
 		StretchDIBits(hdc, 0, 0, rs.width, rs.height, 0, 0,

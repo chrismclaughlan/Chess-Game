@@ -23,5 +23,5 @@ private:
 public:
 	void setTile(Tile ntile, int32 pos) { this->tiles[pos] = ntile; };
 	
-	Tile* getTile(int32 pos) { return this->tiles[pos]; };
+	Tile* getTile(int32 pos) { return &tiles[pos]; };
 };

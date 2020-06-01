@@ -2,12 +2,12 @@
 #include <windows.h>
 #include "types.h"
 
-struct RenderState
+static struct RenderState
 {
 	int32 width, height;
 	void* memory;
 	BITMAPINFO bitmapinfo;
-};
+} rs;
 
 namespace Render
 {

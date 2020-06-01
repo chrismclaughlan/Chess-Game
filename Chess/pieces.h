@@ -4,13 +4,13 @@
 
 class Piece
 {
-private:
+protected:
 	char* name;
 	Tile position;
 
 public:
-	Piece();
-	~Piece();
+	Piece() {};
+	~Piece() {};
 
 	char* getName() { return this->name; };
 	Tile getPosition() { return this->position; };
@@ -29,5 +29,5 @@ public:
 	Pawn();
 	~Pawn();
 
-	Tile** possibleMoves();
+	//Tile** possibleMoves();
 };
