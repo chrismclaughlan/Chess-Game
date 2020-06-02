@@ -1,5 +1,26 @@
-#include "game.h"
 #include "types.h"
+#include "render.cpp"
+#include "game.h"
+
+Game::Game()
+{
+
+}
+
+Game::~Game()
+{
+	delete[] boards;
+}
+
+Board* Game::getBoardState(int32 round)
+{
+	return boards[round];
+}
+
+void Game::setBoardState(Board* nboard, int32 round)
+{
+	boards[round] = nboard;
+}
 
 int32 Game::simulate(Input* input, float dt)
 {
@@ -12,7 +33,7 @@ int32 Game::simulate(Input* input, float dt)
 	// Handle actions
 
 	// Handle rendering
-	//Render::ClearScreen
+	Render::ClearScreen(0xffffff);
 	
 	return CONTINUE_GAME;
 }

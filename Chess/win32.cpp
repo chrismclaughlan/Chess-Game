@@ -1,15 +1,13 @@
 #include <windows.h>
 
 #include "types.h"
-#include "game.h"
 #include "render.h"
+#include "game.h"
 
 const char* GAME_NAME = "Chess";
 static bool is_running = true;
 const int32 WINDOW_WIDTH = 800;
 const int32 WINDOW_HEIGHT = 600;
-
-//static RenderState rs;
 
 LRESULT CALLBACK
 window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -30,12 +28,12 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		rs.width = rect.right - rect.left;
 		rs.height = rect.bottom - rect.top;
 
-		int32 buff_size = rs.width * rs.height * sizeof(unsigned int);
+		int32 buffer_size = rs.width * rs.height * sizeof(uint32);
 		if (rs.memory)
 		{
 			VirtualFree(rs.memory, 0, MEM_RELEASE);
 		}
-		rs.memory = VirtualAlloc(0, buff_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+		rs.memory = VirtualAlloc(0, buffer_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
 		rs.bitmapinfo.bmiHeader.biSize = sizeof(rs.bitmapinfo);
 		rs.bitmapinfo.bmiHeader.biWidth = rs.width;
@@ -43,6 +41,8 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		rs.bitmapinfo.bmiHeader.biPlanes = 1;
 		rs.bitmapinfo.bmiHeader.biBitCount = 32;
 		rs.bitmapinfo.bmiHeader.biCompression = BI_RGB;
+
+
 	} break;
 
 	default:
@@ -53,7 +53,7 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 int32 WinMain
-(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32 nShowCmd)
 {
 	WNDCLASS window_class = {};
 	window_class.style = CS_HREDRAW | CS_VREDRAW;
@@ -69,7 +69,7 @@ int32 WinMain
 
 	Input input = {};
 
-	float delta_time = 0.016666f;  // TODO
+	float delta_time = 0.016666f;
 	LARGE_INTEGER frame_begin_time;
 	QueryPerformanceCounter(&frame_begin_time);
 
@@ -84,7 +84,9 @@ int32 WinMain
 
 	while (is_running)
 	{
+		// Input
 		MSG message;
+
 		for (int i = 0; i < BUTTON_COUNT; i++)
 		{
 			input.buttons[i].has_changed = false;
@@ -92,6 +94,7 @@ int32 WinMain
 
 		while (PeekMessage(&message, window, 0, 0, PM_REMOVE))
 		{
+
 			switch (message.message)
 			{
 			case WM_KEYUP:
@@ -122,15 +125,14 @@ input.buttons[b].is_down = is_down;\
 				DispatchMessage(&message);
 			}
 			}
-		}  // PeekMessage ...
+		}
 
 		// Simulate
-		game.simulate(&input, delta_time);
+		int gResult = game.simulate(&input, delta_time);
 
 		// Render
-		StretchDIBits(hdc, 0, 0, rs.width, rs.height, 0, 0,
-			rs.width, rs.height, rs.memory,
-			&rs.bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
+		StretchDIBits(hdc, 0, 0, rs.width, rs.height, 0, 0, rs.width, rs.height, 
+			rs.memory, &rs.bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
 
 
 		LARGE_INTEGER frame_end_time;

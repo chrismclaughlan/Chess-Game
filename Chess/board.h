@@ -8,6 +8,10 @@ private:
 	int32 y;
 
 public:
+	Tile();
+	Tile(int32, int32);
+	~Tile();
+
 	int32 getX() { return this->x; };
 	int32 getY() { return this->y; };
 
@@ -18,10 +22,13 @@ public:
 class Board
 {
 private:
-	Tile tiles[64];
+	Tile* tiles[64];
 
 public:
-	void setTile(Tile ntile, int32 pos) { this->tiles[pos] = ntile; };
+	Board();
+	~Board();
 
-	Tile* getTile(int32 pos) { return &tiles[pos]; };
+	void setTile(Tile* ntile, int32 pos) { this->tiles[pos] = ntile; };
+
+	Tile* getTile(int32 pos) { return tiles[pos]; };
 };
