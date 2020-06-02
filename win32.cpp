@@ -1,13 +1,15 @@
 #include <windows.h>
-
 #include "types.h"
-#include "render.h"
 #include "game.h"
+#include "render.h"
+#include "input.h"
 
-const char* GAME_NAME = "Chess";
 static bool is_running = true;
-const int32 WINDOW_WIDTH = 800;
-const int32 WINDOW_HEIGHT = 600;
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 800;
+const wchar_t* GAME_NAME = L"Chess";
+
+RenderState rs;
 
 LRESULT CALLBACK
 window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -28,7 +30,7 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		rs.width = rect.right - rect.left;
 		rs.height = rect.bottom - rect.top;
 
-		int32 buffer_size = rs.width * rs.height * sizeof(uint32);
+		int32 buffer_size = rs.width * rs.height * sizeof(unsigned int);
 		if (rs.memory)
 		{
 			VirtualFree(rs.memory, 0, MEM_RELEASE);
@@ -42,7 +44,6 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		rs.bitmapinfo.bmiHeader.biBitCount = 32;
 		rs.bitmapinfo.bmiHeader.biCompression = BI_RGB;
 
-
 	} break;
 
 	default:
@@ -52,18 +53,18 @@ window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return result;
 }
 
-int32 WinMain
-(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32 nShowCmd)
+int32 WINAPI WinMain
+(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	WNDCLASS window_class = {};
 	window_class.style = CS_HREDRAW | CS_VREDRAW;
-	window_class.lpszClassName = "Game Window Class";
+	window_class.lpszClassName = L"Game Window Class";
 	window_class.lpfnWndProc = window_callback;
 
 	RegisterClass(&window_class);
 
-	HWND window = CreateWindow(window_class.lpszClassName, GAME_NAME,
-		WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT,
+	HWND window = CreateWindow(window_class.lpszClassName, GAME_NAME, 
+		WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 
 		WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, hInstance, 0);
 	HDC hdc = GetDC(window);
 
@@ -81,6 +82,7 @@ int32 WinMain
 	}
 
 	Game game;
+	int32 game_result;
 
 	while (is_running)
 	{
@@ -128,11 +130,16 @@ input.buttons[b].is_down = is_down;\
 		}
 
 		// Simulate
-		int gResult = game.simulate(&input, delta_time);
+		game_result = game.simulate(&input, delta_time);
+		if (game_result == 1)
+		{
+			is_running = false;
+		}
 
 		// Render
-		StretchDIBits(hdc, 0, 0, rs.width, rs.height, 0, 0, rs.width, rs.height, 
-			rs.memory, &rs.bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
+		StretchDIBits(hdc, 0, 0, rs.width, rs.height, 0, 0,
+			rs.width, rs.height, rs.memory,
+			&rs.bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
 
 
 		LARGE_INTEGER frame_end_time;

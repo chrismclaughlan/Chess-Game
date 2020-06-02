@@ -1,4 +1,5 @@
 #pragma once
+// NEW
 
 // Handle input
 #define is_down(b) (input->buttons[b].is_down)
@@ -9,6 +10,9 @@
 #define CONTINUE_GAME 0
 #define GAME_END 1
 
+#define WHITE 0xffffff
+#define BLACK 0x000000
+
 typedef char			int8;
 typedef unsigned char	uint8;
 typedef short			int16;
@@ -17,24 +21,3 @@ typedef int				int32;
 typedef unsigned int	uint32;
 typedef long			int64;
 typedef unsigned long	uint64;
-
-struct ButtonState
-{
-	bool is_down;
-	bool has_changed;
-};
-
-enum
-{
-	BUTTON_UP,
-	BUTTON_DOWN,
-	BUTTON_LEFT,
-	BUTTON_RIGHT,
-
-	BUTTON_COUNT,  // always last
-};
-
-struct Input
-{
-	ButtonState buttons[BUTTON_COUNT];
-};
