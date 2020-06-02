@@ -33,7 +33,7 @@ void Tile::draw(int32 w, int32 h)
 		(window_y_limit * y / h) + tile_y_size, tile_x_size, tile_y_size, colour);
 }
 
-void Tile::drawOutline(int32 w, int32 h)
+void Tile::drawOutline(int32 w, int32 h, uint32 colour, float thickness)
 {
 	float window_x_limit = (rs.width / (rs.height * render_scale));
 	float window_y_limit = (rs.height / (rs.height * render_scale));
@@ -43,5 +43,5 @@ void Tile::drawOutline(int32 w, int32 h)
 	float y1 = (window_y_limit * y / h);
 	float x2 = (window_x_limit * x / h) + tile_x_size;
 	float y2 = (window_y_limit * y / h) + tile_y_size;
-	Render::DrawRectO(x1, y1, x2, y2, 0xff0000, outline_tickness);
+	Render::DrawRectO(x1, y1, x2, y2, colour, thickness);
 }

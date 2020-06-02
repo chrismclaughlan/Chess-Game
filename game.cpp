@@ -38,11 +38,18 @@ Board* Game::getBoardState(int32 round)
 int32 Game::simulate(Input* input, float dt)
 {
 	Board* board = *current_board;
+
 	// Handle input
-	//if (is_down(BUTTON_UP))		;
-	//if (is_down(BUTTON_DOWN))	;
-	//if (is_down(BUTTON_LEFT))	;
-	//if (is_down(BUTTON_RIGHT))	;
+	if (pressed(BUTTON_UP))
+		board->selectUp();
+	if (pressed(BUTTON_DOWN))
+		board->selectDown();
+	if (pressed(BUTTON_LEFT))
+		board->selectLeft();
+	if (pressed(BUTTON_RIGHT))
+		board->selectRight();
+	if (pressed(BUTTON_RETURN))
+		board->selectEnter();
 
 	// Handle actions
 
@@ -55,5 +62,5 @@ int32 Game::simulate(Input* input, float dt)
 
 void Game::progress()
 {
-	
+	std::advance(current_board, 1);
 }

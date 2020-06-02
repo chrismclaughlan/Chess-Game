@@ -14,6 +14,7 @@ private:
 	int32 height = 8;
 
 	std::vector<Tile*>				tiles;
+	std::vector<Tile*>::iterator	current_tile;
 	std::vector<Player*>			players;
 	std::vector<Player*>::iterator	current_player;
 
@@ -30,4 +31,11 @@ public:
 	void drawOutlines();
 	void drawPieces();
 	void drawPlayers();
+
+	void selectUp();
+	void selectDown();
+	void selectLeft();
+	void selectRight();
+	void selectEnter();
+	void selectCancel();
 };

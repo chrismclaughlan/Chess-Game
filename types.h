@@ -10,8 +10,8 @@ typedef unsigned long	uint64;
 
 // Handle input
 #define is_down(b) (input->buttons[b].is_down)
-#define pressed(b) (input->buttons[b].is_down && input->buttons[b].changed)
-#define released(b) (!input->buttons[b].is_down && input->buttons[b].changed)
+#define pressed(b) (input->buttons[b].is_down && input->buttons[b].has_changed)
+#define released(b) (!input->buttons[b].is_down && input->buttons[b].has_changed)
 
 // Handle return codes
 #define CONTINUE_GAME 0

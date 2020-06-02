@@ -59,6 +59,8 @@ Board::Board()
 		}
 	}
 
+	current_tile = tiles.begin();
+
 	players.push_back(new Player(this, player1_mask, 8, 8, WHITE));
 	players.push_back(new Player(this, player2_mask, 8, 8, BLACK));
 
@@ -96,6 +98,13 @@ void Board::drawTiles()
 	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
 	{
 		tiles[i]->draw(width, height);
+
+		// Draw selected tile
+		Tile* tile = *current_tile;
+		if (tiles[i] == tile)
+		{
+			tiles[i]->drawOutline(width, height, 0x00ad43, 0.7);
+		}
 	}
 }
 
@@ -103,7 +112,7 @@ void Board::drawOutlines()
 {
 	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
 	{
-		tiles[i]->drawOutline(width, height);
+		tiles[i]->drawOutline(width, height, 0xff0000, 0.2);
 	}
 }
 
@@ -111,4 +120,67 @@ void Board::drawPlayers()
 {
 	for (std::vector<Player>::size_type i = 0; i != players.size(); i++)
 		players[i]->draw(width, height);
+}
+
+void Board::selectUp()
+{
+	// if hit top boundary; warp to bottom
+	if ((current_tile - tiles.begin()) + width > width * height)
+	{
+		std::advance(current_tile, -(width * (height - 1)));
+	}
+	else
+	{
+		std::advance(current_tile, width);
+	}
+}
+
+void Board::selectDown()
+{
+	// if hit bottom boundary; warp to top
+	if ((current_tile - tiles.begin()) - width < 0)
+	{
+		std::advance(current_tile, +(width * (height - 1)));
+	}
+	else
+	{
+		std::advance(current_tile, -width);
+	}
+}
+
+void Board::selectLeft()
+{
+	// if hit left boundary; warp to right
+
+	if ((current_tile - tiles.begin()) % width == 0)
+	{
+		std::advance(current_tile, width - 1);
+	}
+	else
+	{
+		std::advance(current_tile, -1);
+	}
+}
+
+void Board::selectRight()
+{
+	// if hit right boundary; warp to other side
+	if ((current_tile - tiles.begin() + 1) % width == 0)
+	{
+		std::advance(current_tile, -(width - 1));
+	}
+	else
+	{
+		std::advance(current_tile, 1);
+	}
+}
+
+void Board::selectEnter()
+{
+
+}
+
+void Board::selectCancel()
+{
+
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "types.h"
 
-static const float outline_tickness = 0.5;
+//static const float outline_tickness = 0.5;
 
 class Tile
 {
@@ -24,5 +24,5 @@ public:
 	void setColour(uint32 ncolour) { colour = ncolour; };
 
 	void draw(int32, int32);
-	void drawOutline(int32, int32);
+	void drawOutline(int32, int32, uint32, float);
 };
