@@ -3,6 +3,14 @@
 
 extern RenderState rs;
 
+Pawn::Pawn(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x00FF00;
+	has_moved = false;
+};
+
 Pawn::Pawn(Tile* npos, uint32 ncolour)
 {
 	//this->name = (char*)"Pawn";
@@ -38,6 +46,13 @@ void Pawn::draw(int32 w, int32 h)
 //	return ;
 //}
 
+Rook::Rook(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x008000;
+};
+
 Rook::Rook(Tile* npos, uint32 ncolour)
 {
 	//this->name = (char*)"Pawn";
@@ -61,6 +76,13 @@ void Rook::draw(int32 w, int32 h)
 
 	//this->position->setColour(0x00ffff);
 }
+
+Knight::Knight(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x00FFFF;
+};
 
 Knight::Knight(Tile* npos, uint32 ncolour)
 {
@@ -86,6 +108,13 @@ void Knight::draw(int32 w, int32 h)
 	//this->position->setColour(0x00ffff);
 }
 
+Bishop::Bishop(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x008080;
+};
+
 Bishop::Bishop(Tile* npos, uint32 ncolour)
 {
 	//this->name = (char*)"Pawn";
@@ -110,6 +139,13 @@ void Bishop::draw(int32 w, int32 h)
 	//this->position->setColour(0x00ffff);
 }
 
+Queen::Queen(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x0000FF;
+};
+
 Queen::Queen(Tile* npos, uint32 ncolour)
 {
 	//this->name = (char*)"Pawn";
@@ -133,6 +169,13 @@ void Queen::draw(int32 w, int32 h)
 
 	//this->position->setColour(0x00ffff);
 }
+
+King::King(Tile* npos)
+{
+	//this->name = (char*)"Pawn";
+	position = npos;
+	colour = 0x0000FF;
+};
 
 King::King(Tile* npos, uint32 ncolour)
 {

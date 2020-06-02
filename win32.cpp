@@ -131,6 +131,7 @@ input.buttons[b].is_down = is_down;\
 
 		// Simulate
 		game_result = game.simulate(&input, delta_time);
+		game.progress();
 		if (game_result == 1)
 		{
 			is_running = false;

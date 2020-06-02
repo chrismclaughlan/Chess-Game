@@ -142,6 +142,7 @@
     <ClCompile Include="board.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="pieces.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="win32.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="pieces.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="types.h" />

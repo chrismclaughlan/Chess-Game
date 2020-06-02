@@ -25,7 +25,6 @@ Tile::~Tile()
 
 void Tile::draw(int32 w, int32 h)
 {
-	//Render::DrawRect(x + TILE_SIZE, y + TILE_SIZE, TILE_SIZE, TILE_SIZE, colour);
 	float window_x_limit = (rs.width / (rs.height * render_scale));
 	float window_y_limit = (rs.height / (rs.height * render_scale));
 	float tile_x_size = window_x_limit / w;
@@ -36,7 +35,6 @@ void Tile::draw(int32 w, int32 h)
 
 void Tile::drawOutline(int32 w, int32 h)
 {
-	//Render::DrawRect(x + TILE_SIZE, y + TILE_SIZE, TILE_SIZE, TILE_SIZE, colour);
 	float window_x_limit = (rs.width / (rs.height * render_scale));
 	float window_y_limit = (rs.height / (rs.height * render_scale));
 	float tile_x_size = window_x_limit / w;

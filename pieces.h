@@ -28,6 +28,7 @@ private:
 	bool has_moved = false;
 
 public:
+	Pawn(Tile*);
 	Pawn(Tile*, uint32);
 
 	//Tile** possibleMoves();
@@ -39,6 +40,7 @@ class Rook : public Piece
 private:
 
 public:
+	Rook(Tile*);
 	Rook(Tile*, uint32);
 
 	//Tile** possibleMoves();
@@ -50,6 +52,7 @@ class Knight : public Piece
 private:
 
 public:
+	Knight(Tile*);
 	Knight(Tile*, uint32);
 
 	//Tile** possibleMoves();
@@ -61,6 +64,7 @@ class Bishop : public Piece
 private:
 
 public:
+	Bishop(Tile*);
 	Bishop(Tile*, uint32);
 
 	//Tile** possibleMoves();
@@ -72,6 +76,7 @@ class Queen : public Piece
 private:
 
 public:
+	Queen(Tile*);
 	Queen(Tile*, uint32);
 
 	//Tile** possibleMoves();
@@ -83,6 +88,7 @@ class King : public Piece
 private:
 
 public:
+	King(Tile*);
 	King(Tile*, uint32);
 
 	//Tile** possibleMoves();

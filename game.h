@@ -10,17 +10,20 @@ class Game
 {
 private:  // Business logic
 	std::vector<Board*> boards;
-	int32 round;
+	std::vector<Board*>::iterator current_board;
+	//std::vector<Board*>::iterator	round;
 
 public:
 	Game();
 	~Game();
 
 	void setBoardState(Board*, int32);
-	void setRound(int32);
+	//void setRound(int32);
 
 	Board* getBoardState(int32);
-	int32 getRound();
+	//int32 getRound();
 
 	int32 simulate(Input*, float);
+
+	void progress();
 };

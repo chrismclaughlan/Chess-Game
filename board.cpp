@@ -7,29 +7,28 @@
 
 extern RenderState rs;
 
-//static int32 player1_pawn_mask[8][8] =
-static uint32 player1_piece_mask[64] =
+int32 player1_mask[64] =
 {
-	RO, KN, BI, KI, QU, BI, KN, RO,
-	PA, PA, PA, PA, PA, PA, PA, PA,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
+	ROOK, KNIG, BISH, KING, QUEE, BISH, KNIG, ROOK,
+	PAWN, PAWN, PAWN, PAWN, PAWN, PAWN, PAWN, PAWN,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
 };
 
-static uint32 player2_piece_mask[64] =
+int32 player2_mask[64] =
 {
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __,
-	PA, PA, PA, PA, PA, PA, PA, PA,
-	RO, KN, BI, QU, KI, BI, KN, RO,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT, EMPT,
+	PAWN, PAWN, PAWN, PAWN, PAWN, PAWN, PAWN, PAWN,
+	ROOK, KNIG, BISH, QUEE, KING, BISH, KNIG, ROOK,
 };
 
 Board::Board()
@@ -44,61 +43,52 @@ Board::Board()
 			if (y % 2 == 0)
 			{
 				if (x % 2 == 0)
-					ntile->setColour(WHITE);
+					ntile->setColour(BEIGE);
 				else
-					ntile->setColour(BLACK);
+					ntile->setColour(BROWN);
 			}
 			else
 			{
 				if (x % 2 == 0)
-					ntile->setColour(BLACK);
+					ntile->setColour(BROWN);
 				else
-					ntile->setColour(WHITE);
+					ntile->setColour(BEIGE);
 			}
 
 			tiles.push_back(ntile);
-
-			// Place player1 pieces
-			if (player1_piece_mask[x + (width * y)] == PA)
-				pawns.push_back(new Pawn(ntile, PA));
-			if (player1_piece_mask[x + (width * y)] == RO)
-				rooks.push_back(new Rook(ntile, RO));
-			if (player1_piece_mask[x + (width * y)] == KN)
-				knights.push_back(new Knight(ntile, KN));
-			if (player1_piece_mask[x + (width * y)] == BI)
-				bishops.push_back(new Bishop(ntile, BI));
-			if (player1_piece_mask[x + (width * y)] == QU)
-				queens.push_back(new Queen(ntile, QU));
-			if (player1_piece_mask[x + (width * y)] == KI)
-				kings.push_back(new King(ntile, KI));
-			// Place player2 pieces
-			if (player2_piece_mask[x + (width * y)] == PA)
-				pawns.push_back(new Pawn(ntile, PA));
-			if (player2_piece_mask[x + (width * y)] == RO)
-				rooks.push_back(new Rook(ntile, RO));
-			if (player2_piece_mask[x + (width * y)] == KN)
-				knights.push_back(new Knight(ntile, KN));
-			if (player2_piece_mask[x + (width * y)] == BI)
-				bishops.push_back(new Bishop(ntile, BI));
-			if (player2_piece_mask[x + (width * y)] == QU)
-				queens.push_back(new Queen(ntile, QU));
-			if (player2_piece_mask[x + (width * y)] == KI)
-				kings.push_back(new King(ntile, KI));
 		}
 	}
 
-	//// Create white Pawns
-	//for (int32 x = 0; x < width; x++)
-	//{
-	//	pawns[x + (width * y_white)] = new Pawn(getTile(x + (width * y_white)), white);
-	//	pawns[x + (width * y_black)] = new Pawn(getTile(x + (width * y_black)), white);
-	//}
+	players.push_back(new Player(this, player1_mask, 8, 8, WHITE));
+	players.push_back(new Player(this, player2_mask, 8, 8, BLACK));
+
+	current_player = players.begin();
+}
+
+Board::Board(const Board& prev)
+{
+	this->width = prev.width;
+	this->height = prev.height;
+
+	this->tiles = prev.tiles;
+	this->players = prev.players;
+
+	// iterator turn to next player
+	if (prev.current_player < prev.players.end())
+	{
+		this->current_player = prev.current_player;
+		std::advance(this->current_player, 1);
+	}
+	else
+	{
+		this->current_player = players.begin();
+	}
 }
 
 Board::~Board()
 {
 	tiles.clear();
-	pawns.clear();
+	players.clear();
 }
 
 void Board::drawTiles()
@@ -106,39 +96,19 @@ void Board::drawTiles()
 	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
 	{
 		tiles[i]->draw(width, height);
+	}
+}
+
+void Board::drawOutlines()
+{
+	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
+	{
 		tiles[i]->drawOutline(width, height);
 	}
 }
 
-void Board::drawPieces()
+void Board::drawPlayers()
 {
-	for (std::vector<Pawn>::size_type i = 0; i != pawns.size(); i++)
-	{
-		pawns[i]->draw(width, height);
-	}
-	
-	for (std::vector<Rook>::size_type i = 0; i != rooks.size(); i++)
-	{
-		rooks[i]->draw(width, height);
-	}
-	
-	for (std::vector<Knight>::size_type i = 0; i != knights.size(); i++)
-	{
-		knights[i]->draw(width, height);
-	}
-	
-	for (std::vector<Bishop>::size_type i = 0; i != bishops.size(); i++)
-	{
-		bishops[i]->draw(width, height);
-	}
-	
-	for (std::vector<Queen>::size_type i = 0; i != queens.size(); i++)
-	{
-		queens[i]->draw(width, height);
-	}
-	
-	for (std::vector<King>::size_type i = 0; i != kings.size(); i++)
-	{
-		kings[i]->draw(width, height);
-	}
+	for (std::vector<Player>::size_type i = 0; i != players.size(); i++)
+		players[i]->draw(width, height);
 }
