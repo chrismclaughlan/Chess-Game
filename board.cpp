@@ -117,6 +117,12 @@ void Board::drawPlayers()
 	}
 }
 
+void Board::drawPlayerCursor()
+{
+	Player* cp = *current_player;
+	cp->drawCursor(width, height);
+}
+
 void Board::drawPlayerSelection()
 {
 	Player* cp = *current_player;

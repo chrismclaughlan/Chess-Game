@@ -24,3 +24,4 @@ static const uint32 WHITE = 0xffffff;
 static const uint32 BLACK = 0x000000;
 static const uint32 BROWN = 0x581845;
 static const uint32 BEIGE = 0xF5F5DC;
+static const uint32 GREEN = 0x008000;

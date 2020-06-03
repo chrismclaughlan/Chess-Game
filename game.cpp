@@ -49,12 +49,13 @@ int32 Game::simulate(Input* input, float dt)
 		player->selectLeft();
 	if (pressed(BUTTON_RIGHT))
 		player->selectRight();
+	if (pressed(BUTTON_SPACE))
+		player->select();
 	if (pressed(BUTTON_RETURN))
 	{
-		//player->selectEnter();
-		//return SELECT_ENTER;
-		//board->nextPlayer();
-		player->selectEnter();
+		// TODO check valid turn
+		player->selectClear();
+		board->nextPlayer();
 	}
 	if (pressed(BUTTON_ESCAPE))
 	{
@@ -67,6 +68,7 @@ int32 Game::simulate(Input* input, float dt)
 	board->drawTiles();
 	board->drawPlayers();
 	board->drawPlayerSelection();
+	board->drawPlayerCursor();  // After selection
 
 	return CONTINUE_GAME;
 }

@@ -3,7 +3,7 @@
 #include "board.h"
 
 Player::Player
-(Board* nparent, int32 mask[], int32 width, int32 height, const uint32 colour, const uint32 nselection_colour)
+(Board* nparent, int32 mask[], int32 width, int32 height, const uint32 colour, const uint32 ncursor_colour)
 {
 	for (int y = 0; y < height; y++)
 	{
@@ -13,33 +13,39 @@ Player::Player
 
 			if (mask[x + (y * width)] == PAWN)
 			{
-				pawns.push_back(new Pawn(ntile));
-				//pawns.push_back(new Pawn(ntile, colour));
+				Pawn* npiece = new Pawn(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == ROOK)
 			{
-				rooks.push_back(new Rook(ntile));
-				//rooks.push_back(new Rook(ntile, colour));
+				Rook* npiece = new Rook(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == KNIG)
 			{
-				knights.push_back(new Knight(ntile));
-				//knights.push_back(new Knight(ntile, colour));
+				Knight* npiece = new Knight(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == BISH)
 			{
-				bishops.push_back(new Bishop(ntile));
-				//bishops.push_back(new Bishop(ntile, colour));
+				Bishop* npiece = new Bishop(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == QUEE)
 			{
-				queens.push_back(new Queen(ntile));
-				//queens.push_back(new Queen(ntile, colour));
+				Queen* npiece = new Queen(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == KING)
 			{
-				kings.push_back(new King(ntile));
-				//kings.push_back(new King(ntile, colour));
+				King* npiece = new King(ntile);
+				pieces.push_back(npiece);
+				ntile->setPiece(npiece);
 			}
 		}
 	}
@@ -47,36 +53,21 @@ Player::Player
 	std::vector<Tile*>* tiles = nparent->getTiles();
 	current_tile = tiles->begin();
 	parent = nparent;
-	selection_colour = nselection_colour;
+	cursor_colour = ncursor_colour;
 }
 
 Player::~Player()
 {
-	pawns.clear();
-	rooks.clear();
-	knights.clear();
-	bishops.clear();
-	queens.clear();
-	kings.clear();
+	pieces.clear();
 }
 
 void Player::draw(int32 width, int32 height)
 {
-	for (std::vector<Pawn>::size_type i = 0; i != pawns.size(); i++)
-		pawns[i]->draw(width, height);
-	for (std::vector<Rook>::size_type i = 0; i != rooks.size(); i++)
-		rooks[i]->draw(width, height);
-	for (std::vector<Knight>::size_type i = 0; i != knights.size(); i++)
-		knights[i]->draw(width, height);
-	for (std::vector<Bishop>::size_type i = 0; i != bishops.size(); i++)
-		bishops[i]->draw(width, height);
-	for (std::vector<Queen>::size_type i = 0; i != queens.size(); i++)
-		queens[i]->draw(width, height);
-	for (std::vector<King>::size_type i = 0; i != kings.size(); i++)
-		kings[i]->draw(width, height);
+	for (std::vector<Piece*>::size_type i = 0; i != pieces.size(); i++)
+		pieces[i]->draw(width, height);
 }
 
-void Player::drawSelection(int32 width, int32 height)
+void Player::drawCursor(int32 width, int32 height)
 {
 	// Draw selected tile
 	std::vector<Tile*>* tiles = parent->getTiles();
@@ -86,8 +77,18 @@ void Player::drawSelection(int32 width, int32 height)
 	{
 		if (_tiles[i] == ct)
 		{
-			_tiles[i]->drawOutline(width, height, selection_colour, 0.7);
+			_tiles[i]->drawOutline(width, height, cursor_colour, .5);
 		}
+	}
+}
+
+void Player::drawSelection(int32 width, int32 height)
+{
+	// Draw selected tile
+
+	for (std::vector<Tile>::size_type i = 0; i != selected_tiles.size(); i++)
+	{
+		selected_tiles[i]->drawOutline(width, height, selection_colour, 1);
 	}
 }
 
@@ -153,86 +154,39 @@ void Player::selectRight()
 	}
 }
 
-void Player::selectEnter()
+void Player::select()
 {
-	std::vector<Tile*>* tiles = parent->getTiles();
-	std::vector<Tile*> _tiles = *tiles;
 	Tile* ct = *current_tile;
-
-#define selectPieces(a, b, c)\
-{\
-for (std::vector<a>::size_type i = 0; i != b.size(); i++)\
-{\
-if (b[i]->getPosition() == c)\
-{\
-if (b[i]->isSelected())\
-{\
-b[i]->deSelect(); \
-}\
-else\
-{\
-b[i]->select();\
-}\
-}\
-}\
-}\
-
-	selectPieces(Pawn, pawns, ct);
-	selectPieces(Rook, rooks, ct);
-	selectPieces(Knight, knights, ct);
-	selectPieces(Bishop, bishops, ct);
-	selectPieces(Queen, queens, ct);
-	selectPieces(King, kings, ct);
-
-	//for (std::vector<Pawn>::size_type i = 0; i != pawns.size(); i++)
-	//	selectPiece(pawns, ct);
-	//for (std::vector<Rook>::size_type i = 0; i != rooks.size(); i++)
-	//	selectPiece(rooks, ct);
-	//for (std::vector<Knight>::size_type i = 0; i != knights.size(); i++)
-	//	selectPiece(knights, ct);
-	//for (std::vector<Bishop>::size_type i = 0; i != bishops.size(); i++)
-	//	selectPiece(bishops, ct);
-	//for (std::vector<Queen>::size_type i = 0; i != queens.size(); i++)
-	//	selectPiece(queens, ct);
-	//for (std::vector<King>::size_type i = 0; i != kings.size(); i++)
-	//	selectPiece(kings, ct);
+	int32 size = selected_tiles.size();
+	if (size == 0)
+		selected_tiles.push_back(ct);
+	else if (size == 1)
+	{
+		if (selected_tiles[0] == ct)
+			selected_tiles.clear();
+		else
+			selected_tiles.push_back(ct);
+	}
+	else if (size == 2)
+	{
+		if (selected_tiles[0] == ct)
+			selected_tiles.clear();
+		else if (selected_tiles[1] == ct)
+			selected_tiles.pop_back();
+	}
 }
 
 void Player::selectCancel()
 {
-	//std::vector<Tile*>* tiles = parent->getTiles();
-	//std::vector<Tile*> _tiles = *tiles;
+	if (selected_tiles.empty())
+		return;
 
-	//for (std::vector<Tile>::size_type i = 0; i != _tiles.size(); i++)
-	//	_tiles[i]->deSelect();
+	selected_tiles.pop_back();
+}
 
-#define deSelectPieces(a, b)\
-for (std::vector<a>::size_type i = 0; i != b.size(); i++)\
-{\
-	b[i]->deSelect();\
-}\
-
-	deSelectPieces(Pawn, pawns);
-	deSelectPieces(Rook, rooks);
-	deSelectPieces(Knight, knights);
-	deSelectPieces(Bishop, bishops);
-	deSelectPieces(Queen, queens);
-	deSelectPieces(King, kings);
-	// remove selection from all tiles
-	//for (std::vector<Pawn>::size_type i = 0; i != pawns.size(); i++)
-	//{
-	//	pawns[i]->deSelect();
-	//}
-	//for (std::vector<Rook>::size_type i = 0; i != rooks.size(); i++)
-	//	rooks[i]->deSelect();
-	//for (std::vector<Knight>::size_type i = 0; i != knights.size(); i++)
-	//	knights[i]->deSelect();
-	//for (std::vector<Bishop>::size_type i = 0; i != bishops.size(); i++)
-	//	bishops[i]->deSelect();
-	//for (std::vector<Queen>::size_type i = 0; i != queens.size(); i++)
-	//	queens[i]->deSelect();
-	//for (std::vector<King>::size_type i = 0; i != kings.size(); i++)
-	//	kings[i]->deSelect();
+void Player::selectClear()
+{
+	selected_tiles.clear();
 }
 
 void Player::checkTile(Tile* ntile)

@@ -2,28 +2,32 @@
 #include "tile.h"
 #include "types.h"
 
+class Tile;
+
 class Piece
 {
 protected:
 	Tile* position;
 	uint32 colour;
-	bool selected;
+	//bool selected;
 
 public:
-	Piece() { position = nullptr; colour = 0x000000; selected = false; };
+	Piece() { position = nullptr; colour = 0x000000; };
 	~Piece() {};
 
 	//char* getName() { return this->name; };
 	Tile* getPosition() { return position; };
 	uint32 getColour() { return colour; };
-	bool isSelected() { return selected; };
+	//bool isSelected() { return selected; };
 
 	//void setName(char* nname) { this->name = nname; };
 	void setPosition(Tile* npos) { position = npos; };
 	void setColour(uint32 ncolour) { colour = ncolour; };
 
-	void select();
-	void deSelect();
+	//void select();
+	//void deSelect();
+
+	virtual void draw(int32, int32) {};
 };
 
 

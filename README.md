@@ -4,7 +4,7 @@
  - "space" creates blueprint for potential moves
 
  ## TODO
- - transfer selection to player
+ - Transfer selection to player.h: std::vector<Tile*>::iterator selected_tile;  // TODO
 
 ```https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window```
 

@@ -35,6 +35,7 @@ public:
 	void drawOutlines();
 	void drawPieces();
 	void drawPlayers();
+	void drawPlayerCursor();
 	void drawPlayerSelection();
 
 	void nextPlayer();
