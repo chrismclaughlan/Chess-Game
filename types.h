@@ -14,9 +14,12 @@ typedef unsigned long	uint64;
 #define released(b) (!input->buttons[b].is_down && input->buttons[b].has_changed)
 
 // Handle return codes
+#define GAME_END -1
 #define CONTINUE_GAME 0
-#define GAME_END 1
+#define SELECT_ENTER 1
 
+static const uint32 RED = 0xff0000;
+static const uint32 BLUE = 0x0000ff;
 static const uint32 WHITE = 0xffffff;
 static const uint32 BLACK = 0x000000;
 static const uint32 BROWN = 0x581845;

@@ -3,6 +3,8 @@
 
 //static const float outline_tickness = 0.5;
 
+static const uint32 selection_colour = 0x00ff00;
+
 class Tile
 {
 private:

@@ -1,7 +1,10 @@
 # Chess Game
  
+ ## Ideas
+ - "space" creates blueprint for potential moves
+
  ## TODO
- - Implement game.progess() and start moving pieces (:
+ - transfer selection to player
 
 ```https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window```
 

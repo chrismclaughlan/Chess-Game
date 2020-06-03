@@ -40,9 +40,13 @@ private:
 	std::vector<Queen*>		queens;
 	std::vector<King*>		kings;
 
+	Board* parent;
+	std::vector<Tile*>::iterator current_tile;
+	int32 selection_colour;
+
 public:
 	//Player();
-	Player(Board*, int32[], int32, int32, const uint32);
+	Player(Board*, int32[], int32, int32, const uint32, const uint32);
 	~Player();
 
 	void setPawn(Pawn* npawn, int32 pos) { this->pawns[pos] = npawn; };
@@ -60,4 +64,14 @@ public:
 	King* getKing(int32 pos) { return kings[pos]; };
 
 	void draw(int32, int32);
+	void drawSelection(int32, int32);
+
+	void selectUp();
+	void selectDown();
+	void selectLeft();
+	void selectRight();
+	void selectEnter();
+	void selectCancel();
+
+	void checkTile(Tile*);
 };

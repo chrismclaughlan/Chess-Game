@@ -59,10 +59,10 @@ Board::Board()
 		}
 	}
 
-	current_tile = tiles.begin();
+	//current_tile = tiles.begin();
 
-	players.push_back(new Player(this, player1_mask, 8, 8, WHITE));
-	players.push_back(new Player(this, player2_mask, 8, 8, BLACK));
+	players.push_back(new Player(this, player1_mask, 8, 8, WHITE, RED));
+	players.push_back(new Player(this, player2_mask, 8, 8, BLACK, BLUE));
 
 	current_player = players.begin();
 }
@@ -98,13 +98,6 @@ void Board::drawTiles()
 	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
 	{
 		tiles[i]->draw(width, height);
-
-		// Draw selected tile
-		Tile* tile = *current_tile;
-		if (tiles[i] == tile)
-		{
-			tiles[i]->drawOutline(width, height, 0x00ad43, 0.7);
-		}
 	}
 }
 
@@ -119,68 +112,23 @@ void Board::drawOutlines()
 void Board::drawPlayers()
 {
 	for (std::vector<Player>::size_type i = 0; i != players.size(); i++)
+	{
 		players[i]->draw(width, height);
-}
-
-void Board::selectUp()
-{
-	// if hit top boundary; warp to bottom
-	if ((current_tile - tiles.begin()) + width > width * height)
-	{
-		std::advance(current_tile, -(width * (height - 1)));
-	}
-	else
-	{
-		std::advance(current_tile, width);
 	}
 }
 
-void Board::selectDown()
+void Board::drawPlayerSelection()
 {
-	// if hit bottom boundary; warp to top
-	if ((current_tile - tiles.begin()) - width < 0)
-	{
-		std::advance(current_tile, +(width * (height - 1)));
-	}
-	else
-	{
-		std::advance(current_tile, -width);
-	}
+	Player* cp = *current_player;
+	cp->drawSelection(width, height);
 }
 
-void Board::selectLeft()
+void Board::nextPlayer()
 {
-	// if hit left boundary; warp to right
+	std::advance(current_player, 1);
 
-	if ((current_tile - tiles.begin()) % width == 0)
+	if (current_player == players.end())
 	{
-		std::advance(current_tile, width - 1);
+		current_player = players.begin();
 	}
-	else
-	{
-		std::advance(current_tile, -1);
-	}
-}
-
-void Board::selectRight()
-{
-	// if hit right boundary; warp to other side
-	if ((current_tile - tiles.begin() + 1) % width == 0)
-	{
-		std::advance(current_tile, -(width - 1));
-	}
-	else
-	{
-		std::advance(current_tile, 1);
-	}
-}
-
-void Board::selectEnter()
-{
-
-}
-
-void Board::selectCancel()
-{
-
 }

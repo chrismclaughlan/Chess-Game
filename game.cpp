@@ -38,29 +38,42 @@ Board* Game::getBoardState(int32 round)
 int32 Game::simulate(Input* input, float dt)
 {
 	Board* board = *current_board;
+	Player* player = board->getCurrentPlayer();
 
 	// Handle input
 	if (pressed(BUTTON_UP))
-		board->selectUp();
+		player->selectUp();
 	if (pressed(BUTTON_DOWN))
-		board->selectDown();
+		player->selectDown();
 	if (pressed(BUTTON_LEFT))
-		board->selectLeft();
+		player->selectLeft();
 	if (pressed(BUTTON_RIGHT))
-		board->selectRight();
+		player->selectRight();
 	if (pressed(BUTTON_RETURN))
-		board->selectEnter();
+	{
+		//player->selectEnter();
+		//return SELECT_ENTER;
+		//board->nextPlayer();
+		player->selectEnter();
+	}
+	if (pressed(BUTTON_ESCAPE))
+	{
+		player->selectCancel();
+	}
 
 	// Handle actions
 
 	// Handle rendering
 	board->drawTiles();
 	board->drawPlayers();
+	board->drawPlayerSelection();
 
 	return CONTINUE_GAME;
 }
 
 void Game::progress()
 {
-	std::advance(current_board, 1);
+	//Board* b;
+	//b = *current_board;
+	//std::advance(current_board, 1);
 }

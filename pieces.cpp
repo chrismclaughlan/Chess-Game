@@ -3,6 +3,16 @@
 
 extern RenderState rs;
 
+void Piece::select()
+{
+	selected = true;
+}
+
+void Piece::deSelect()
+{
+	selected = false;
+}
+
 Pawn::Pawn(Tile* npos)
 {
 	//this->name = (char*)"Pawn";
@@ -30,10 +40,11 @@ void Pawn::draw(int32 w, int32 h)
 	float pawn_y_size = window_y_limit / (h * 4);
 	float x = ((window_x_limit * position->getX()) / w) + tile_x_size;
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
+	
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }
 
 //Tile** Pawn::possibleMoves()
@@ -73,8 +84,8 @@ void Rook::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }
 
 Knight::Knight(Tile* npos)
@@ -104,8 +115,8 @@ void Knight::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }
 
 Bishop::Bishop(Tile* npos)
@@ -135,8 +146,8 @@ void Bishop::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }
 
 Queen::Queen(Tile* npos)
@@ -166,8 +177,8 @@ void Queen::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }
 
 King::King(Tile* npos)
@@ -197,6 +208,6 @@ void King::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
 
-
-	//this->position->setColour(0x00ffff);
+	if (selected)
+		position->drawOutline(w, h, selection_colour, 1);
 }

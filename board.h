@@ -14,7 +14,7 @@ private:
 	int32 height = 8;
 
 	std::vector<Tile*>				tiles;
-	std::vector<Tile*>::iterator	current_tile;
+	//std::vector<Tile*>::iterator	current_tile;
 	std::vector<Player*>			players;
 	std::vector<Player*>::iterator	current_player;
 
@@ -25,17 +25,17 @@ public:
 
 	void setTile(Tile* ntile, int32 pos) { this->tiles[pos] = ntile; };
 
-	Tile* getTile(int32 pos) { return tiles[pos]; };
+	int32 getWidth() { return width; };
+	int32 getHeight() { return height; };
+	Player* getCurrentPlayer() { Player* p = *current_player; return p; }
+	std::vector<Tile*>* getTiles() { return &tiles; };
+	Tile* getTile(int32 npos) { return tiles[npos]; };
 
 	void drawTiles();
 	void drawOutlines();
 	void drawPieces();
 	void drawPlayers();
+	void drawPlayerSelection();
 
-	void selectUp();
-	void selectDown();
-	void selectLeft();
-	void selectRight();
-	void selectEnter();
-	void selectCancel();
+	void nextPlayer();
 };

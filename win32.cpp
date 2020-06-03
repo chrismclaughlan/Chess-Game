@@ -133,11 +133,11 @@ input.buttons[b].is_down = is_down;\
 
 		// Simulate
 		game_result = game.simulate(&input, delta_time);
-		if (game_result == -1)
+		if (game_result == GAME_END)
 		{
 			is_running = false;
 		}
-		if (game_result == 1)
+		if (game_result == SELECT_ENTER)
 		{
 			game.progress();
 		}
