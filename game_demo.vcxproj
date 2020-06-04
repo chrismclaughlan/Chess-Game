@@ -157,7 +157,6 @@
     <ClInclude Include="pieces.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
-    <ClInclude Include="selection.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>

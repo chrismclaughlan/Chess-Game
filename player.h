@@ -17,6 +17,7 @@ enum
 };
 
 class Board;
+class Piece;
 
 class Player
 {
@@ -27,11 +28,16 @@ private:
 	std::vector<Tile*>::iterator current_tile;
 	std::vector<Tile*> selected_tiles;
 	int32 cursor_colour;
+	int32 colour;
+	bool reverse;
 
 public:
 	//Player();
-	Player(Board*, int32[], int32, int32, const uint32, const uint32);
+	Player(Board*, int32[], int32, int32, const uint32, const uint32, bool);
 	~Player();
+
+	uint32 getColour() { return colour; };
+	bool isReversed() { return reverse; };
 
 	void draw(int32, int32);
 	void drawCursor(int32, int32);
@@ -45,5 +51,8 @@ public:
 	void selectCancel();
 	void selectClear();
 
-	void checkTile(Tile*);
+	void calculatePossibleMoves();
+	void clearPossibleMoves();
+
+	bool hasPiece(Piece*);
 };

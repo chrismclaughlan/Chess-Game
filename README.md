@@ -4,7 +4,8 @@
  - "space" creates blueprint for potential moves
 
  ## TODO
- - Transfer selection to player.h: std::vector<Tile*>::iterator selected_tile;  // TODO
+ - FIX STD::VECTOR<TILE*>* ...
+ - static const int32 width, height; <-- implement as static const
 
 ```https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window```
 

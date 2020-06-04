@@ -1,8 +1,11 @@
 #pragma once
+#include <vector>
 #include "tile.h"
 #include "types.h"
+#include "player.h"
 
 class Tile;
+class Player;
 
 class Piece
 {
@@ -28,6 +31,9 @@ public:
 	//void deSelect();
 
 	virtual void draw(int32, int32) {};
+	virtual void fillPossibleMoves(std::vector<Tile*>, int32, Player*) {};
+
+	int32 checkPossible(std::vector<Tile*>, int32);
 };
 
 
@@ -40,8 +46,8 @@ public:
 	Pawn(Tile*);
 	Pawn(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };
 
 class Rook : public Piece
@@ -52,8 +58,8 @@ public:
 	Rook(Tile*);
 	Rook(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };
 
 class Knight : public Piece
@@ -64,8 +70,8 @@ public:
 	Knight(Tile*);
 	Knight(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };
 
 class Bishop : public Piece
@@ -76,8 +82,8 @@ public:
 	Bishop(Tile*);
 	Bishop(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };
 
 class Queen : public Piece
@@ -88,8 +94,8 @@ public:
 	Queen(Tile*);
 	Queen(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };
 
 class King : public Piece
@@ -100,6 +106,6 @@ public:
 	King(Tile*);
 	King(Tile*, uint32);
 
-	//Tile** possibleMoves();
 	void draw(int32, int32);
+	void fillPossibleMoves(std::vector<Tile*>, int32, Player*);
 };

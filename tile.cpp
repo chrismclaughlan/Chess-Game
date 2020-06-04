@@ -48,6 +48,9 @@ void Tile::draw
 
 	if (piece != nullptr)
 		piece->draw(w, h);
+
+	if (possible_move)
+		Render::DrawOutline(x, y, w, h, possible_move_colour, 1);
 }
 
 void Tile::drawOutline

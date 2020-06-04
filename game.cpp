@@ -5,7 +5,6 @@
 
 Game::Game()
 {
-	//boards = (Board**)malloc(MAX_ROUNDS * sizeof(Board));
 	boards.push_back(new Board());
 	current_board = boards.begin();
 }
@@ -20,20 +19,10 @@ void Game::setBoardState(Board* nboard, int32 round)
 	boards[round] = nboard;
 }
 
-//void Game::setRound(int32 nround)
-//{
-//	current_round = nround;
-//}
-
 Board* Game::getBoardState(int32 round)
 {
 	return boards[round];
 }
-
-//int32 Game::getRound()
-//{
-//	return round;
-//}
 
 int32 Game::simulate(Input* input, float dt)
 {

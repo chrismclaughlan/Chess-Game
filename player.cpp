@@ -1,9 +1,10 @@
+#include <vector>
 #include "types.h"
 #include "player.h"
 #include "board.h"
 
 Player::Player
-(Board* nparent, int32 mask[], int32 width, int32 height, const uint32 colour, const uint32 ncursor_colour)
+(Board* nparent, int32 mask[], int32 width, int32 height, const uint32 ncolour, const uint32 ncursor_colour, bool nreverse)
 {
 	for (int y = 0; y < height; y++)
 	{
@@ -13,37 +14,37 @@ Player::Player
 
 			if (mask[x + (y * width)] == PAWN)
 			{
-				Pawn* npiece = new Pawn(ntile);
+				Pawn* npiece = new Pawn(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == ROOK)
 			{
-				Rook* npiece = new Rook(ntile);
+				Rook* npiece = new Rook(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == KNIG)
 			{
-				Knight* npiece = new Knight(ntile);
+				Knight* npiece = new Knight(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == BISH)
 			{
-				Bishop* npiece = new Bishop(ntile);
+				Bishop* npiece = new Bishop(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == QUEE)
 			{
-				Queen* npiece = new Queen(ntile);
+				Queen* npiece = new Queen(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
 			if (mask[x + (y * width)] == KING)
 			{
-				King* npiece = new King(ntile);
+				King* npiece = new King(ntile, ncolour);
 				pieces.push_back(npiece);
 				ntile->setPiece(npiece);
 			}
@@ -54,6 +55,8 @@ Player::Player
 	current_tile = tiles->begin();
 	parent = nparent;
 	cursor_colour = ncursor_colour;
+	colour = ncolour;
+	reverse = nreverse;
 }
 
 Player::~Player()
@@ -70,22 +73,20 @@ void Player::draw(int32 width, int32 height)
 void Player::drawCursor(int32 width, int32 height)
 {
 	// Draw selected tile
-	std::vector<Tile*>* tiles = parent->getTiles();
-	std::vector<Tile*> _tiles = *tiles;
+	std::vector<Tile*>* _tiles = parent->getTiles();
+	std::vector<Tile*> tiles = *_tiles;
 	Tile* ct = *current_tile;
-	for (std::vector<Tile>::size_type i = 0; i != tiles->size(); i++)
+	for (std::vector<Tile>::size_type i = 0; i != tiles.size(); i++)
 	{
-		if (_tiles[i] == ct)
+		if (tiles[i] == ct)
 		{
-			_tiles[i]->drawOutline(width, height, cursor_colour, .5);
+			tiles[i]->drawOutline(width, height, cursor_colour, .5);
 		}
 	}
 }
 
 void Player::drawSelection(int32 width, int32 height)
 {
-	// Draw selected tile
-
 	for (std::vector<Tile>::size_type i = 0; i != selected_tiles.size(); i++)
 	{
 		selected_tiles[i]->drawOutline(width, height, selection_colour, 1);
@@ -96,9 +97,10 @@ void Player::selectUp()
 {
 	// if hit top boundary; warp to bottom
 	std::vector<Tile*>* tiles = parent->getTiles();
+	//std::vector<Tile*> tiles = *_tiles;
 	int32 width = parent->getWidth();
 	int32 height = parent->getHeight();
-	if ((current_tile - tiles->begin()) + width > width * height)
+	if ((current_tile - tiles->begin()) + width >= width * height)
 	{
 		std::advance(current_tile, -(width * (height - 1)));
 	}
@@ -112,6 +114,7 @@ void Player::selectDown()
 {
 	// if hit bottom boundary; warp to top
 	std::vector<Tile*>* tiles = parent->getTiles();
+	//std::vector<Tile*> tiles = *_tiles;
 	int32 width = parent->getWidth();
 	int32 height = parent->getHeight();
 	if ((current_tile - tiles->begin()) - width < 0)
@@ -128,6 +131,7 @@ void Player::selectLeft()
 {
 	// if hit left boundary; warp to right
 	std::vector<Tile*>* tiles = parent->getTiles();
+	//std::vector<Tile*> tiles = *_tiles;
 	int32 width = parent->getWidth();
 	if ((current_tile - tiles->begin()) % width == 0)
 	{
@@ -143,6 +147,7 @@ void Player::selectRight()
 {
 	// if hit right boundary; warp to other side
 	std::vector<Tile*>* tiles = parent->getTiles();
+	//std::vector<Tile*> tiles = *_tiles;
 	int32 width = parent->getWidth();
 	if ((current_tile - tiles->begin() + 1) % width == 0)
 	{
@@ -158,21 +163,48 @@ void Player::select()
 {
 	Tile* ct = *current_tile;
 	int32 size = selected_tiles.size();
-	if (size == 0)
-		selected_tiles.push_back(ct);
-	else if (size == 1)
+	if (size == 0)  // SELECTION EMPTY
 	{
-		if (selected_tiles[0] == ct)
-			selected_tiles.clear();
+		Piece* piece = ct->getPiece();
+		if (piece)
+		{
+			if (piece->getColour() == colour)
+			{
+				selected_tiles.push_back(ct);  // if my peice -> select
+				this->calculatePossibleMoves();
+			}
+		}
 		else
-			selected_tiles.push_back(ct);
+		{
+			return;
+		}
 	}
-	else if (size == 2)
+	else if (size == 1)  // PIECE ALREADY SELECTED
 	{
 		if (selected_tiles[0] == ct)
+		{
 			selected_tiles.clear();
-		else if (selected_tiles[1] == ct)
+			this->clearPossibleMoves();
+		}
+		else if (ct->isPossibleMove())
+		{
+			selected_tiles.push_back(ct);
+		}
+	}
+	else if (size == 2)  // PIECE AND TILE ALREADY SELECTED
+	{
+		if (selected_tiles[0] == ct)  // if piece; clear
+		{
+			selected_tiles.clear();
+			this->clearPossibleMoves();
+		}
+		else if (selected_tiles[1] == ct)  // if tile; clear
 			selected_tiles.pop_back();
+		else if (ct->isPossibleMove())  // if possible move; switch tiles
+		{
+			selected_tiles.pop_back();
+			selected_tiles.push_back(ct);
+		}
 	}
 }
 
@@ -180,6 +212,8 @@ void Player::selectCancel()
 {
 	if (selected_tiles.empty())
 		return;
+	else if (selected_tiles.size() == 1)
+		this->clearPossibleMoves();
 
 	selected_tiles.pop_back();
 }
@@ -187,27 +221,37 @@ void Player::selectCancel()
 void Player::selectClear()
 {
 	selected_tiles.clear();
+	this->clearPossibleMoves();
 }
 
-void Player::checkTile(Tile* ntile)
+void Player::calculatePossibleMoves()
 {
-	//for (std::vector<Pawn>::size_type i = 0; i != pawns.size(); i++)
-	//{
-	//	if (pawns[i]->getPosition() == ntile)
-	//	{
-	//		pawns[i]->select();
-	//	}
-	//}
-	//for (std::vector<Rook>::size_type i = 0; i != rooks.size(); i++)
-	//{
-	//}
-	//	rooks[i]->
-	//for (std::vector<Knight>::size_type i = 0; i != knights.size(); i++)
-	//	knights[i]->
-	//for (std::vector<Bishop>::size_type i = 0; i != bishops.size(); i++)
-	//	bishops[i]->
-	//for (std::vector<Queen>::size_type i = 0; i != queens.size(); i++)
-	//	queens[i]->
-	//for (std::vector<King>::size_type i = 0; i != kings.size(); i++)
-	//	kings[i]->
+	if (selected_tiles.size() == 1)
+	{
+		Piece* piece = selected_tiles[0]->getPiece();
+		std::vector<Tile*>* tiles = parent->getTiles();
+		int32 current_idx = current_tile - tiles->begin();
+		piece->fillPossibleMoves(*tiles, current_idx, this);
+	}
+}
+
+void Player::clearPossibleMoves()
+{
+	// reset possible moves
+	std::vector<Tile*>* tiles = parent->getTiles();
+	std::vector<Tile*> _tiles = *tiles;
+	for (std::vector<Tile>::size_type i = 0; i != tiles->size(); i++)
+	{
+		_tiles[i]->setPossibleMove(false);
+	}
+}
+
+bool Player::hasPiece(Piece* piece)
+{
+	for (std::vector<Piece>::size_type i = 0; i != pieces.size(); i++)
+	{
+		if (pieces[i] == piece)
+			return true;
+	}
+	return false;
 }

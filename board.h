@@ -6,6 +6,10 @@
 #include "player.h"
 
 class Player;
+class Tile;
+
+static const int32 width = 8;
+static const int32 height = 8;
 
 class Board
 {
@@ -14,7 +18,6 @@ private:
 	int32 height = 8;
 
 	std::vector<Tile*>				tiles;
-	//std::vector<Tile*>::iterator	current_tile;
 	std::vector<Player*>			players;
 	std::vector<Player*>::iterator	current_player;
 
