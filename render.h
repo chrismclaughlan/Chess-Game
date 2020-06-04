@@ -25,4 +25,7 @@ public:
 	static void DrawLine(float, float, float, float, uint32);
 	static void DrawRectO(float, float, float, float, uint32, float);
 	static void DrawOutline(float, float, int32, int32, uint32, float);
+
+	static void DrawTriangleP(int32, int32, int32, int32, uint32);
+	static void DrawTriangle(float, float, float, float, uint32);
 };

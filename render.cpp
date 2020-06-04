@@ -146,3 +146,49 @@ void Render::DrawOutline
 	float y2 = (window_y_limit * y / h) + tile_y_size;
 	Render::DrawRectO(x1, y1, x2, y2, colour, thickness);
 }
+
+void Render::DrawTriangleP
+(int32 x1, int32 y1, int32 x2, int32 y2, uint32 colour)
+{
+	clamp(0, &x1, rs.width);
+	clamp(0, &x2, rs.width);
+	clamp(0, &y1, rs.height);
+	clamp(0, &y2, rs.height);
+
+	/*
+			   x2, y2
+			 /		|
+		/			|
+	x1,y1 ----------+
+	
+
+	*/
+
+	float m;
+	m = (y2 - y1) / (x2 - x1);
+
+	/*
+	y = mx
+	*/
+
+	for (int32 y = y1; y < y2; y++)
+	{
+		int32 new_x = (y + x1) / m;
+		uint32* pixel = (uint32*)rs.memory + new_x + (y * rs.width);
+		for (int32 x = new_x; x < x2; x++)
+		{
+			*pixel++ = colour;
+		}
+	}
+}
+
+void Render::DrawTriangle
+(float x1, float y1, float x2, float y2, uint32 colour)
+{
+	x1 *= rs.height * render_scale;
+	y1 *= rs.height * render_scale;
+	x2 *= rs.height * render_scale;
+	y2 *= rs.height * render_scale;
+
+	DrawTriangleP((int32)x1, (int32)y1, (int32)x2, (int32)y2, colour);
+}

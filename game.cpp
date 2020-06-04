@@ -65,6 +65,8 @@ int32 Game::simulate(Input* input, float dt)
 	board->drawPlayerSelection();
 	board->drawPlayerCursor();  // After selection
 
+	Render::DrawTriangle(10, 10, 50, 50, 0xfffff);
+
 	return CONTINUE_GAME;
 }
 

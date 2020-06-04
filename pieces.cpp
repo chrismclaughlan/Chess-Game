@@ -11,14 +11,6 @@
 #define moveDiagonalUpRight() if (r) idx -= width + 1; else idx += width + 1;
 #define moveDiagonalDownLeft() if (r) idx -= -width - 1; else idx += -width - 1;
 #define moveDiagonalDownRight() if (r) idx -= -width + 1; else idx += -width + 1;
-//#define moveUp()					(idx += width)
-//#define moveDown()					(idx -= width)
-//#define moveLeft()					(idx -= 1)
-//#define moveRight()					(idx += 1)
-//#define moveDiagonalUpLeft()		(idx += width - 1)
-//#define moveDiagonalUpRight()		(idx += width + 1)
-//#define moveDiagonalDownLeft()		(idx += -width - 1)
-//#define moveDiagonalDownRight()		(idx += -width + 1)
 #define POSSIBLE 0
 #define POSSIBLE_WITH_PIECE 1
 #define NOT_POSSIBLE 2
