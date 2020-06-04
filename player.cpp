@@ -255,3 +255,25 @@ bool Player::hasPiece(Piece* piece)
 	}
 	return false;
 }
+
+bool Player::validateTurn()
+{
+	if (selected_tiles.size() != 2)
+		return false;
+
+	// move piece
+	Tile* tile_from = selected_tiles[0];
+	Tile* tile_to = selected_tiles[1];
+	Piece* piece_to_move = tile_from->getPiece();
+	Piece* piece_to_replace = tile_to->getPiece();
+
+	if (piece_to_replace)
+	{
+		piece_to_replace->~Piece();
+	}
+
+	tile_from->setPiece(nullptr);
+	tile_to->setPiece(piece_to_move);
+	piece_to_move->setPosition(tile_to);
+	return true;
+}

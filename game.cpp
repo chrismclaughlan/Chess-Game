@@ -28,6 +28,7 @@ int32 Game::simulate(Input* input, float dt)
 {
 	Board* board = *current_board;
 	Player* player = board->getCurrentPlayer();
+	bool next_turn = false;
 
 	// Handle input
 	if (pressed(BUTTON_UP))
@@ -43,8 +44,8 @@ int32 Game::simulate(Input* input, float dt)
 	if (pressed(BUTTON_RETURN))
 	{
 		// TODO check valid turn
-		player->selectClear();
-		board->nextPlayer();
+		if (player->validateTurn())
+			next_turn = true;
 	}
 	if (pressed(BUTTON_ESCAPE))
 	{
@@ -52,6 +53,11 @@ int32 Game::simulate(Input* input, float dt)
 	}
 
 	// Handle actions
+	if (next_turn)
+	{
+		player->selectClear();
+		board->nextPlayer();
+	}
 
 	// Handle rendering
 	board->drawTiles();

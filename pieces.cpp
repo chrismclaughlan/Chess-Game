@@ -70,7 +70,6 @@ Pawn::Pawn(Tile* npos, uint32 ncolour)
 
 void Pawn::draw(int32 w, int32 h)
 {
-	//Render::DrawRect(x + TILE_SIZE, y + TILE_SIZE, TILE_SIZE, TILE_SIZE, colour);
 	float window_x_limit = (rs.width / (rs.height * render_scale));
 	float window_y_limit = (rs.height / (rs.height * render_scale));
 	float tile_x_size = window_x_limit / (w * 2);
@@ -81,9 +80,6 @@ void Pawn::draw(int32 w, int32 h)
 	float y = ((window_y_limit * position->getY()) / h) + tile_y_size;
 	
 	Render::DrawRect(x, y, pawn_x_size, pawn_y_size, colour);
-
-	//if (selected)
-	//	position->drawOutline(w, h, selection_colour, 1);
 }
 
 void Pawn::fillPossibleMoves(std::vector<Tile*> tiles, int32 current_idx, Player* this_player)

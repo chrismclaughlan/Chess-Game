@@ -55,4 +55,5 @@ public:
 	void clearPossibleMoves();
 
 	bool hasPiece(Piece*);
+	bool validateTurn();
 };
