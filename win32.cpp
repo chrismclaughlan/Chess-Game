@@ -5,8 +5,8 @@
 #include "input.h"
 
 static bool is_running = true;
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 800;
+const int WINDOW_WIDTH = 600;
+const int WINDOW_HEIGHT = 600;
 const wchar_t* GAME_NAME = L"Chess";
 
 RenderState rs;
