@@ -18,6 +18,13 @@ typedef unsigned long	uint64;
 #define CONTINUE_GAME 0
 #define SELECT_ENTER 1
 
+enum class GameCode
+{
+	gEnd,
+	gContinue,
+	gSelectEnter,
+};
+
 static const uint32 RED = 0xff0000;
 static const uint32 BLUE = 0x0000ff;
 static const uint32 WHITE = 0xffffff;
