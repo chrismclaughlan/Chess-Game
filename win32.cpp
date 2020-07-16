@@ -82,7 +82,6 @@ int32 WINAPI WinMain
 	}
 
 	Game game;
-	int32 game_result;
 
 	while (is_running)
 	{
@@ -133,12 +132,12 @@ input.buttons[b].is_down = is_down;\
 		}
 
 		// Simulate
-		game_result = game.simulate(&input, delta_time);
-		if (game_result == GAME_END)
+		GameCode gameResult = game.simulate(&input, delta_time);
+		if (gameResult == GameCode::gEnd)
 		{
 			is_running = false;
 		}
-		if (game_result == SELECT_ENTER)
+		if (gameResult == GameCode::gContinue)
 		{
 			game.progress();
 		}

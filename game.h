@@ -20,7 +20,7 @@ public:
 
 	Board* getBoardState(int32);
 
-	int32 simulate(Input*, float);
+	GameCode simulate(Input*, float);
 
 	void progress();
 };

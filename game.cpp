@@ -24,7 +24,7 @@ Board* Game::getBoardState(int32 round)
 	return boards[round];
 }
 
-int32 Game::simulate(Input* input, float dt)
+GameCode Game::simulate(Input* input, float dt)
 {
 	Board* board = *current_board;
 	Player* player = board->getCurrentPlayer();
@@ -65,7 +65,7 @@ int32 Game::simulate(Input* input, float dt)
 	board->drawPlayerSelection();
 	board->drawPlayerCursor();  // After selection
 
-	return CONTINUE_GAME;
+	return GameCode::gContinue;
 }
 
 void Game::progress()
